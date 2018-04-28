@@ -152,8 +152,8 @@ public class TypeChecker implements ASTVisitor {
 		//System.out.println("Inside typechecker visitStatementInput");
 		
 		statementInput.e.visit(this, arg);
-		statementInput.dec = this.symbolTb.lookup(statementInput.destName);
-		if(statementInput.dec == null)
+		Declaration dec = this.symbolTb.lookup(statementInput.destName);
+		if(dec == null)
 			Error(statementInput.firstToken, "visitStatementInput(..)", "Input identifier doesn't exists!");
 		//visit this if not null
 		//statementInput.dec.visit(this, arg);
@@ -162,6 +162,7 @@ public class TypeChecker implements ASTVisitor {
 			if(statementInput.e.getType() != Type.INTEGER) 
 				Error(statementInput.firstToken, "visitStatementInput(..)", "Input expression type not Integer!");
 		}
+		statementInput.dec = dec;
 		//System.out.println(statementInput);
 		return statementInput;
 		//throw new UnsupportedOperationException();
@@ -362,6 +363,13 @@ public class TypeChecker implements ASTVisitor {
 		statementAssign.lhs.visit(this, arg);
 		statementAssign.e.visit(this, arg);
 		
+		/*
+		System.out.println("statementAssign.lhs.getType()");
+		System.out.println(statementAssign.lhs.getType());
+		System.out.println("statementAssign.e.getType()");
+		System.out.println(statementAssign.e.getType());
+		*/
+		
 		if(statementAssign.lhs.getType() != statementAssign.e.getType())
 			Error(statementAssign.firstToken, "visitStatementAssign(..)", "Types don't match!");
 			
@@ -442,6 +450,9 @@ public class TypeChecker implements ASTVisitor {
 	@Override
 	public Object visitLHSSample(LHSSample lhsSample, Object arg) throws Exception {
 		// TODO Auto-generated method stub
+		
+		//System.out.println("LHSSample");
+		
 		lhsSample.pixelSelector.visit(this, arg);
 		Declaration dec = this.symbolTb.lookup(lhsSample.name);
 		
@@ -490,6 +501,8 @@ public class TypeChecker implements ASTVisitor {
 		// TODO Auto-generated method stub
 		System.out.println();
 		System.out.println(lhsIdent.name);
+		System.out.println("visitLHSIdent");
+		
 		Declaration dec = this.symbolTb.lookup(lhsIdent.name);
 		if(dec != null)
 			lhsIdent.setType(Types.getType(dec.type));

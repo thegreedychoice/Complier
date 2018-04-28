@@ -21,7 +21,7 @@ public class SymbolTableManager {
 	
 	public SymbolTableManager() {
 		this.currentScope = 0;
-		this.nextScope = 1;
+		this.nextScope = 0;
 		this.scope_stack.push(0);
 	}
 	
@@ -44,17 +44,18 @@ public class SymbolTableManager {
 	//inserts the token in the HashMap
 	public boolean insert(String identifier, Declaration dec) {
 		
+		//System.out.println("Inserting " +  dec);
 		ArrayList<Wrapper> list = new ArrayList<Wrapper>();
 		Wrapper symbol = new Wrapper(this.currentScope, dec);
 		
 		//if identifier name already present
 		if(this.symbolTable.containsKey(identifier)) {
-			System.out.println("YOOOOO alredy present");
+			//System.out.println("Inside SymbolTable Manager Insert");
 			list = this.symbolTable.get(identifier);
 			
 			for(Wrapper it: list) {
 				if(it.getScopeNum() == this.currentScope) {
-					System.out.println("Same scope");
+					//System.out.println("Same scope");
 					return false;
 				}
 			}
@@ -64,7 +65,7 @@ public class SymbolTableManager {
 		list.add(symbol);
 		this.symbolTable.put(identifier, list);
 		
-		System.out.println(identifier + "inserted");
+		//System.out.println(dec + "inserted");
 		return true;
 	}
 	
@@ -98,11 +99,16 @@ public class SymbolTableManager {
 		
 		while(it.hasPrevious()) {
 			int symbolScope = it.previous();
+			
+			//System.out.println("symbolScope");
+			//System.out.println(symbolScope);
+			
 			for(int i = 0;i < list.size(); i++) {
 				Wrapper wr = list.get(i);
-				dec = wr.dec;
 				if(wr.getScopeNum() == symbolScope) {
-					return dec;
+					//System.out.println("Lookup Found : " + wr.dec);
+					 dec = wr.dec;
+					 return dec;
 				}
 				
 			}
@@ -118,26 +124,26 @@ public class SymbolTableManager {
 			Declaration dec = null;
 			
 			ArrayList<Wrapper> list = this.symbolTable.get(identifier);
-			System.out.println("Peeking");
+			//System.out.println("Peeking");
 			
-			System.out.println("Scope Stack Scope");
-			System.out.println(this.scope_stack.peek());
+			//System.out.println("Scope Stack Scope");
+			//System.out.println(this.scope_stack.peek());
 			if(list != null) {
 				//find if any wrapper object has scope in the scope stack
 				for(Wrapper it: list) {
 					int wrScope = it.getScopeNum();
 					dec = it.getDeclaration();
 					
-					System.out.println("Identifier");
-					System.out.println(wrScope);
-					System.out.println(dec);
+					//System.out.println("Identifier");
+					//System.out.println(wrScope);
+					//System.out.println(dec);
 					
 					
 					
 				}
 			}
 		    
-			System.out.println("End peeking");
+			//System.out.println("End peeking");
 			
 			return dec;
 		}
