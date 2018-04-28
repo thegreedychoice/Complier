@@ -1,5 +1,5 @@
 # Complier
-This is a Class Project. No reuse allowed.
+This is a graduate class Project. No reuse allowed.
 
 The project deals with development of a complete complier for a Haskell inspired language, and consists of the following set of modules -
 
